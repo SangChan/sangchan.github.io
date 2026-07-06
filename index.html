@@ -19,6 +19,7 @@
   <a href="#chapter-5" class="toc-item" data-label="작은 성공을 반복하기">v</a>
   <a href="#chapter-6" class="toc-item" data-label="익숙한 것을 떠나 다시 증명하기">vi</a>
   <a href="#chapter-7" class="toc-item" data-label="각자의 코드가 아니라 하나의 코드처럼">vii</a>
+  <a href="#contact" class="toc-item" data-label="연락하기">end</a>
 </nav>
 
 <div class="wrap">
@@ -57,7 +58,9 @@ $ time xcodebuild build
 <span class="metric">real  0h 15m 08s</span>  <span class="arrow">← 87% reduction</span></div>
     </div>
 
-    <p class="muted">이 구조 전환은 이후 CI/CD를 수동 배포에서 Jenkins, 그리고 GitHub Actions로 이전하는 작업의 기반이 되었고, 팀 전체의 개발 생산성을 약 30% 끌어올리는 결과로 이어졌다.</p>
+    <p class="muted">이 구조 전환은 이후 CI/CD를 수동 배포에서 Jenkins, 그리고 GitHub Actions로 이전하는 작업의 기반이 되었다.</p>
+
+    <p>이 구조는 한 번에 전체로 확장하지 않았다. 2023년부터 카테고리, 기획전, 설정 등 여러 화면에 먼저 적용해 패턴을 검증했고, 그렇게 쌓은 확신을 바탕으로 2025년 리브랜딩에서 서비스의 가장 중요한 지면인 홈 화면 전체를 SwiftUI와 TCA로 다시 짰다. 자체 UI 프레임워크의 유지보수 부담, 비즈니스 로직과 화면 상태 추적의 어려움, 시니어와 주니어 사이의 생산성 격차 — 오래 쌓인 문제를 한 번에 풀려 하지 않고, 이미 검증된 패턴을 넓혀가는 방식으로 풀었다.</p>
 
     <div class="metric-row">
       <div class="metric-item">
@@ -65,14 +68,16 @@ $ time xcodebuild build
         <span class="metric-label">Local Build Time</span>
       </div>
       <div class="metric-item">
-        <span class="metric-num">99.99%+</span>
-        <span class="metric-label">Crash-Free Rate</span>
+        <span class="metric-num">99.99%</span>
+        <span class="metric-label">Crash-Free · v9.0.0→9.9.0</span>
       </div>
       <div class="metric-item">
-        <span class="metric-num">~30%</span>
-        <span class="metric-label">Team Productivity</span>
+        <span class="metric-num">2023→2025</span>
+        <span class="metric-label">Incremental Rollout → Home</span>
       </div>
     </div>
+
+    <p class="further-reading"><a href="https://medium.com/@nol.tech/swiftui%EC%99%80-tca%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-nol-%ED%99%88-%EB%A6%AC%EB%B8%8C%EB%9E%9C%EB%94%A9-6a4b0d73f06d" target="_blank" rel="noreferrer">→ 더 읽기: SwiftUI와 TCA를 활용한 NOL 홈 리브랜딩 (Medium)</a></p>
   </section>
 
   <section class="chapter" id="chapter-2">
@@ -266,6 +271,18 @@ iOS 레거시 리팩토링, 지도 기능 도입, 하이브리드 앱 구조 적
 
 <span class="comment"># 그 이전 · 타피컴퓨터</span>
 무인 발급기 연동 소프트웨어 개발</div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="chapter-mark">contact <span>· next conversation</span></div>
+    <h2 class="chapter-title">함께 더 나은 구조를 이야기하고 싶다면</h2>
+    <p class="muted">모바일 플랫폼, iOS 아키텍처, 팀의 개발 생산성, 오래 유지되는 서비스 구조에 대해 이야기할 수 있습니다.</p>
+    <div class="contact-links" aria-label="연락처">
+      <a href="mailto:sangchan82@gmail.com">Email</a>
+      <a href="https://github.com/SangChan" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://www.linkedin.com/in/sangchanlee/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="https://gyaleon.wordpress.com/" target="_blank" rel="noreferrer">Blog</a>
     </div>
   </section>
 

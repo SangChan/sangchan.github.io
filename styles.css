@@ -196,6 +196,19 @@ blockquote{
   display:block;
 }
 
+.further-reading{
+  margin-top:28px;
+}
+.further-reading a{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px solid var(--rule);
+  transition:color .2s, border-color .2s;
+}
+.further-reading a:hover{color:var(--brass-bright); border-color:var(--brass);}
+
 .epilogue{
   padding:16px 0 88px;
   text-align:center;
@@ -218,8 +231,39 @@ blockquote{
   margin-bottom:24px;
 }
 
+.contact{
+  padding:80px 0 32px;
+  border-top:1px solid var(--rule);
+}
+.contact .chapter-title{
+  margin-bottom:20px;
+}
+.contact-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:32px;
+}
+.contact-links a{
+  min-width:108px;
+  padding:10px 14px;
+  border:1px solid var(--rule);
+  border-radius:6px;
+  color:var(--parchment);
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  text-align:center;
+  text-decoration:none;
+  transition:border-color .2s, color .2s, background .2s;
+}
+.contact-links a:hover{
+  border-color:var(--brass);
+  color:var(--brass-bright);
+  background:rgba(176,141,87,0.08);
+}
+
 footer{
-  padding:80px 0 100px;
+  padding:64px 0 100px;
   text-align:center;
 }
 footer .sign{

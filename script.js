@@ -12,5 +12,5 @@
       }
     });
   }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
-  document.querySelectorAll('.chapter[id]').forEach(function(sec){ observer.observe(sec); });
+  document.querySelectorAll('.chapter[id], .contact[id]').forEach(function(sec){ observer.observe(sec); });
 })();
