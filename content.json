@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "title": "이상찬 — 포트폴리오"
+  },
+  "hero": {
+    "name": "이상찬",
+    "email": "sangchan82@gmail.com",
+    "eyebrow": "Portfolio · iOS Engineering Lead",
+    "identityHtml": "복잡한 모바일 시스템을 <em>팀이 오래 유지할 수 있는 구조</em>로 단순화하고,<br>팀이 스스로 좋은 기술 결정을 내리도록 정렬시키는 엔지니어입니다.",
+    "roleLine": "SENIOR SOFTWARE ENGINEER (STAFF)<span class=\"div\">/</span>iOS LEAD<span class=\"div\">/</span>15Y IOS · 20Y SW"
+  },
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "numeral": "i.",
+      "title": "모듈이 스스로 말하게 하기",
+      "sub": "TUIST · TCA · SWIFTUI — 아키텍처 재설계",
+      "tocLabel": "모듈이 스스로 말하게 하기",
+      "blocks": [
+        { "type": "lede", "html": "팀이 커질수록 빌드는 느려지고, 의존성은 뒤엉킨다. 새 기능 하나를 추가하려면 관련 없는 모듈까지 전부 컴파일해야 했고, 로컬 빌드는 어느새 커피 한 잔을 넘어 점심시간을 잡아먹는 일이 되어 있었다. 문제는 코드가 아니라 구조였다." },
+        { "type": "p", "html": "모듈 경계를 다시 그리는 작업부터 시작했다. 기능 단위로 책임을 쪼개고, Tuist로 의존성 그래프를 명시적으로 선언해 \"누가 누구를 알아야 하는가\"를 코드가 아닌 설계 문서 수준에서 강제했다. TCA와 SwiftUI를 표준 패턴으로 도입한 것도 같은 이유였다 — 새로 합류한 팀원이 기존 관습을 추측하지 않고, 구조를 보면 규칙을 알 수 있도록." },
+        { "type": "quote", "html": "\"빠른 빌드\"가 목표가 아니라, 팀이 매번 같은 실수를 반복하지 않는 구조가 목표였다." },
+        { "type": "plate", "label": "local — build.log", "bodyHtml": "<span class=\"comment\"># before modularization</span>\n$ time xcodebuild build\n<span class=\"before\">real  2h 04m 12s</span>\n\n<span class=\"comment\"># after Tuist + TCA modular architecture</span>\n$ time xcodebuild build\n<span class=\"metric\">real  0h 15m 08s</span>  <span class=\"arrow\">← 87% reduction</span>" },
+        { "type": "muted", "html": "이 구조 전환은 이후 CI/CD를 수동 배포에서 Jenkins, 그리고 GitHub Actions로 이전하는 작업의 기반이 되었다." },
+        { "type": "p", "html": "이 구조는 한 번에 전체로 확장하지 않았다. 2023년부터 카테고리, 기획전, 설정 등 여러 화면에 먼저 적용해 패턴을 검증했고, 그렇게 쌓은 확신을 바탕으로 2025년 리브랜딩에서 서비스의 가장 중요한 지면인 홈 화면 전체를 SwiftUI와 TCA로 다시 짰다. 자체 UI 프레임워크의 유지보수 부담, 비즈니스 로직과 화면 상태 추적의 어려움, 시니어와 주니어 사이의 생산성 격차 — 오래 쌓인 문제를 한 번에 풀려 하지 않고, 이미 검증된 패턴을 넓혀가는 방식으로 풀었다." },
+        { "type": "metrics", "items": [
+          { "num": "2h → 15m", "label": "Local Build Time" },
+          { "num": "99.99%", "label": "Crash-Free · v9.0.0→9.9.0" },
+          { "num": "2023→2025", "label": "Incremental Rollout → Home" }
+        ]},
+        { "type": "furtherReading", "url": "https://medium.com/@nol.tech/swiftui%EC%99%80-tca%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-nol-%ED%99%88-%EB%A6%AC%EB%B8%8C%EB%9E%9C%EB%94%A9-6a4b0d73f06d", "label": "→ 더 읽기: SwiftUI와 TCA를 활용한 NOL 홈 리브랜딩 (Medium)" }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "numeral": "ii.",
+      "title": "정답이 아니라 방향을 제시하기",
+      "sub": "TCA 아키텍처 도입 · 팀 의사결정 · DYNAMIC TYPE",
+      "tocLabel": "정답이 아니라 방향을 제시하기",
+      "blocks": [
+        { "type": "lede", "html": "새 아키텍처를 도입할 때 가장 쉬운 길은 정답을 정해서 통보하는 것이다. 하지만 그렇게 자리잡은 규칙은 그걸 정한 사람이 떠나는 순간 함께 흔들린다. TCA 도입을 검토할 때도 러닝커브를 이유로 신중한 입장이었지만, 이번만큼은 결론에 도달하는 방식 자체를 다르게 가져가고 싶었다." },
+        { "type": "p", "html": "정답을 제시하는 대신 팀원들과 함께 같은 기능을 여러 구조로 구현해보고, 장단점을 나란히 놓고 비교했다. MVVM+Combine과 TCA로 각각 프로토타입을 만들어본 뒤, 장기적인 유지보수 관점에서 어떤 구조가 팀에 남을지 함께 판단했다. TCA로 결론이 났지만, 결론 자체보다 거기 도달한 과정이 이후 팀의 의사결정 방식을 바꿔놓았다." },
+        { "type": "quote", "html": "\"정답을 이야기하기보다 방향을 이야기하려고 합니다. 방향은 제시하지만 구현 방식은 팀이 스스로 결정하도록 합니다.\"" },
+        { "type": "plate", "label": "team — decision.log", "bodyHtml": "<span class=\"comment\"># candidates evaluated in parallel</span>\nMVVM + Combine\nMV + Observation\n<span class=\"metric\">TCA + SwiftUI</span>  <span class=\"arrow\">← chosen by team, not by lead</span>\n\n<span class=\"comment\"># decision criteria</span>\nlearning curve · testability · long-term maintenance" },
+        { "type": "muted", "html": "같은 원칙은 디자인 시스템에도 적용했다. Dynamic Type 지원을 제안했을 때 디자인이 무너질 거라는 우려가 있었지만, 실제로 큰 글꼴을 쓰는 사용자가 생각보다 많다는 데이터를 공유했고 대부분의 화면에 자연스럽게 반영됐다. 이후로는 새 디자인 요구사항이 생기면 시스템이 먼저 막지 않고, 기능을 먼저 구현한 뒤 시스템에 편입하는 방식으로 운영을 바꿨다." }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "numeral": "iii.",
+      "title": "가장 큰 실패에서 다시 시작하기",
+      "sub": "OAUTH 토큰 관리 · RACE CONDITION · SWIFT CONCURRENCY",
+      "tocLabel": "가장 큰 실패에서 다시 시작하기",
+      "blocks": [
+        { "type": "lede", "html": "통합 로그인의 OAuth 토큰 관리 구조를 개선하는 프로젝트였다. 레거시 코드와의 호환성을 지키려 애썼지만, 실제 운영 환경은 예상과 다르게 무너졌다 — 여러 경로에서 동시에 토큰을 갱신하며 Race Condition이 발생했고, 일부 케이스는 Deadlock에 가까운 상태로 이어졌다. 커리어에서 가장 크게 실패한 순간이었다." },
+        { "type": "p", "html": "문제는 기술이 아니라 그 기술을 검증한 방식이었다. 단위 테스트는 충분히 통과했지만, 실제 서비스의 동시 요청 패턴까지는 검증하지 못했다. 실패를 인정한 뒤 Swift Concurrency와 Actor 모델을 처음부터 다시 공부했고, 공유 가변 상태를 격리하는 구조로 다시 설계했다." },
+        { "type": "quote", "html": "\"이 경험 이후에는 새로운 기술을 도입할 때 테스트 코드뿐 아니라 실제 서비스 환경에서 어떤 문제가 발생할 수 있는지 더 많이 고민하게 되었습니다.\"" },
+        { "type": "plate", "label": "incident — production.log", "bodyHtml": "<span class=\"comment\"># unified login · token refresh</span>\n<span class=\"before\">Race Condition</span>  concurrent refresh calls, no isolation\n<span class=\"before\">Deadlock-adjacent</span>  legacy compatibility path\n\n<span class=\"comment\"># response</span>\nrelearn Swift Concurrency + Actor isolation\n<span class=\"metric\">shared mutable state → actor-isolated</span>  <span class=\"arrow\">← ongoing, Swift 6 ready</span>" },
+        { "type": "muted", "html": "지금도 이 구조를 Actor 기반으로 완전히 전환하는 작업을 계속 제안하고 있다. 실패 자체보다, 그 실패를 인정하고 다시 배우는 태도가 이후 팀에서 새 기술을 검토하는 기준이 됐다." }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "numeral": "iv.",
+      "title": "조직 경계가 아니라 사용자 여정을 기준으로",
+      "sub": "해외숙소 리메이크 · 크로스 도메인 UX 통합",
+      "tocLabel": "조직 경계가 아니라 사용자 여정을 기준으로",
+      "blocks": [
+        { "type": "lede", "html": "검색 결과, 상품 상세, 프로모션 페이지 — 해외숙소 서비스는 오랫동안 조직 단위로 쪼개져 있었다. 각 팀은 자기 화면을 잘 만들었지만, 사용자에게는 그저 하나의 여행이었다. 화면과 화면 사이 이동은 매끄럽지 않았고, 같은 정보가 스크린마다 다르게 표현됐다." },
+        { "type": "p", "html": "리메이크를 맡으면서 가장 먼저 한 일은 화면 목록이 아니라 사용자 시나리오를 그리는 것이었다. 사용자가 실제로 밟는 흐름을 따라, 각 조직이 독립적으로 개발하던 화면들을 하나의 여정으로 다시 연결했다. 조직 구조를 존중하면서도, 판단 기준을 \"우리 팀 화면\"에서 \"사용자의 다음 걸음\"으로 바꾸는 작업이었다." },
+        { "type": "quote", "html": "\"기능 하나를 개발하더라도 사용자가 어떤 흐름으로 서비스를 이용하는지 먼저 생각하고, 사용자가 더 좋은 경험을 할 수 있는 방향이라면 그 선택을 우선합니다.\"" },
+        { "type": "plate", "label": "ux — journey.map", "bodyHtml": "<span class=\"comment\"># before — organized by team ownership</span>\n검색 결과 팀 · 상품 상세 팀 · 프로모션 팀  <span class=\"before\">→ 3개의 독립된 화면</span>\n\n<span class=\"comment\"># after — organized by user journey</span>\n<span class=\"metric\">하나의 사용자 시나리오</span>  <span class=\"arrow\">← 조직 경계가 아니라 사용자의 다음 걸음이 기준</span>" },
+        { "type": "muted", "html": "이 프로젝트 이후 새 기능을 검토할 때 \"이 화면이 필요한가\"보다 \"사용자의 여정에서 이 지점이 필요한가\"를 먼저 묻는 습관이 팀에 남았다." }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "numeral": "v.",
+      "title": "작은 성공을 반복하기",
+      "sub": "GITHUB ACTIONS · CI/CD 점진적 확장",
+      "tocLabel": "작은 성공을 반복하기",
+      "blocks": [
+        { "type": "lede", "html": "Jenkins 중심의 CI 환경을 GitHub Actions로 옮기기로 했을 때, 처음부터 완벽한 파이프라인을 그리지 않았다. 대신 가장 작은 단위부터 시작했다 — 기존 Fastlane 배포 스크립트를 그대로 GitHub Runner 위에서 실행하는 것. 바뀐 건 실행 위치뿐, 팀은 아무것도 새로 배우지 않아도 됐다." },
+        { "type": "p", "html": "그 위에 Lint, Formatter, Unit Test, AI Code Review를 하나씩 얹었다. 각 단계는 이전 단계가 문제없이 자리잡은 걸 확인한 뒤에만 추가했다. 한 번에 이상적인 파이프라인을 설계하려 했다면 도입 자체가 늦어졌을 것이다. 지금은 Slack 알림까지 포함한 자동화된 리뷰 환경으로 확장됐고, 여전히 계속 다듬는 중이다." },
+        { "type": "quote", "html": "\"먼저 동작하는 것을 만들고, 실제 사용하면서 점진적으로 개선하는 방식을 선호합니다.\"" },
+        { "type": "plate", "label": "ci — rollout.log", "bodyHtml": "<span class=\"comment\"># stage 0 — migrate runner only</span>\nfastlane deploy script, unchanged, on GitHub Runner\n\n<span class=\"comment\"># stage 1..4 — added one at a time, after each stabilized</span>\n+ lint\n+ formatter\n+ unit test\n+ ai code review\n\n<span class=\"comment\"># current</span>\n<span class=\"metric\">Slack 알림 + 자동화된 리뷰 환경</span>  <span class=\"arrow\">← 계속 확장 중</span>" },
+        { "type": "muted", "html": "같은 습관은 새로운 기술을 도입할 때도 이어졌다. 처음부터 전체 그림을 완성하기보다, 먼저 동작하는 여러 방식을 비교해보고 작은 성공을 반복하며 범위를 넓혀가는 쪽을 택했다." }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "numeral": "vi.",
+      "title": "익숙한 것을 떠나 다시 증명하기",
+      "sub": "EF EDUCATION FIRST · 2015–2019 · 상하이 아시아 HQ · WEBRTC",
+      "tocLabel": "익숙한 것을 떠나 다시 증명하기",
+      "blocks": [
+        { "type": "lede", "html": "도전은 사무실 밖에서부터 시작됐다. 상하이의 아시아 헤드쿼터에는 세계 각지에서 모인 개발자들이 있었고, 언어도 배경도 개발 스타일도 제각각이었다. 익숙한 환경을 떠나, 다시 처음부터 실력으로 증명해야 하는 자리였다." },
+        { "type": "p", "html": "WebRTC 기반 화상 수업 앱을 만드는 프로젝트였다. 런칭은 끝이 아니라 시작이었다 — 그 이후로도 기능은 멈추지 않고 계속 업데이트됐고, 애자일 방식으로 팀과 호흡을 맞추며 매 스프린트마다 실제 사용자의 반응을 반영했다. 국적도 일하는 방식도 다른 동료들과 같은 속도로 나아가려면, 말이 아니라 결과로 신뢰를 쌓는 수밖에 없었다." },
+        { "type": "quote", "html": "실력으로 증명하면, 국적도 언어도 문제가 되지 않는다." },
+        { "type": "plate", "label": "webrtc — launch.log", "bodyHtml": "<span class=\"comment\"># shanghai apac hq — cross-national team</span>\nlaunch: webrtc 기반 화상 수업 앱\n<span class=\"metric\">1,000,000+ classes</span>  <span class=\"arrow\">← since launch, continuously updated</span>\n\n<span class=\"comment\"># process</span>\nagile sprints · continuous delivery · team-driven iteration" },
+        { "type": "muted", "html": "낯선 팀에서 자리를 증명하는 경험은, 이후 어떤 조직에 가더라도 규칙이 아니라 결과로 신뢰를 쌓는 태도로 남았다." }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "numeral": "vii.",
+      "title": "각자의 코드가 아니라 하나의 코드처럼",
+      "sub": "COCOAPODS → SPM · SWIFTLINT · CODE STYLE",
+      "tocLabel": "각자의 코드가 아니라 하나의 코드처럼",
+      "blocks": [
+        { "type": "lede", "html": "의존성 관리자를 CocoaPods에서 Swift Package Manager로 옮기는 작업은 도구 교체처럼 보이지만, 실제로는 \"누구의 코드인가\"라는 질문을 지우는 작업이었다. 라이브러리마다 버전 관리 방식이 달랐고, 파일을 열어보면 어느 팀원이 짰는지 스타일만으로 짐작이 갈 정도였다." },
+        { "type": "p", "html": "SwiftLint와 Formatter를 도입하면서 규칙은 한 사람이 정하지 않았다. 팀원들과 함께 논의해서 기준을 세웠고, 불편한 지점이 나오면 규칙 자체를 다시 고치면서 팀이 자연스럽게 적응하도록 했다. 지금은 모든 라이브러리를 SPM 기반으로 관리한다. 목표는 개인의 스타일을 지우는 게 아니라, 프로젝트 전체가 하나의 코드처럼 보이게 만드는 것이었다." },
+        { "type": "quote", "html": "\"누구의 코드인지 구분하기보다 프로젝트 전체가 하나의 코드처럼 보이는 것을 목표로 했습니다.\"" },
+        { "type": "plate", "label": "deps — migration.log", "bodyHtml": "<span class=\"comment\"># dependency manager</span>\nCocoaPods → <span class=\"metric\">Swift Package Manager</span>  <span class=\"arrow\">← all libraries</span>\n\n<span class=\"comment\"># style rules — decided with the team, not by one person</span>\nSwiftLint + Formatter" },
+        { "type": "muted", "html": "규칙을 세우는 과정도 다르지 않았다. 여러 구현 방식을 먼저 비교하고, 팀원들의 의견을 충분히 들은 뒤에야 방향을 정했다." }
+      ]
+    }
+  ],
+  "epilogueQuote": "\"새로운 기능을 만드는 것보다, 이미 많은 사용자가 쓰는 서비스를 조금씩 더 좋은 방향으로 바꾸는 과정에서 가장 큰 보람을 느낍니다.\"",
+  "priorRoles": {
+    "label": "그 이전의 이야기",
+    "labelSub": "· earlier roles",
+    "plateLabel": "career — earlier.log",
+    "bodyHtml": "<span class=\"comment\"># 2014.07 – 2015.09 · 재능교육</span>\n북미 서비스 API·푸시 시스템 구축, 백엔드+모바일 병행 개발\n사내 개발 교육 진행 (Spring, Git 도입 주도)\n\n<span class=\"comment\"># 2013.06 – 2014.03 · 골프존</span>\niOS 레거시 리팩토링, 지도 기능 도입, 하이브리드 앱 구조 적용\n\n<span class=\"comment\"># 2011.01 – 2013.06 · KTH</span>\n하이브리드 웹앱 플랫폼 '앱스프레소' iOS 브릿지 런타임 및 빌드 시스템 개발\n모바일 솔루션 수상 · 국책사업 선정\n\n<span class=\"comment\"># 그 이전 · 타피컴퓨터</span>\n무인 발급기 연동 소프트웨어 개발"
+  },
+  "contact": {
+    "label": "contact",
+    "labelSub": "· next conversation",
+    "links": [
+      { "label": "Email", "href": "mailto:sangchan82@gmail.com" },
+      { "label": "GitHub", "href": "https://github.com/SangChan", "external": true },
+      { "label": "LinkedIn", "href": "https://www.linkedin.com/in/sangchanlee/", "external": true },
+      { "label": "Blog", "href": "https://gyaleon.wordpress.com/", "external": true }
+    ]
+  },
+  "footer": "— 다음 챕터도 준비 중입니다 —"
+}

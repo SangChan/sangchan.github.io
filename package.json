@@ -1,0 +1,7 @@
+{
+  "name": "sangchan.github.io",
+  "private": true,
+  "scripts": {
+    "build": "node build.js"
+  }
+}
