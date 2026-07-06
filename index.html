@@ -1,1 +1,267 @@
-Hello World
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이상찬 — 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Literata:ital,opsz,wght@0,7..72,300..500;1,7..72,300..400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14120F;
+    --panel:#1C1914;
+    --panel-edge:#2A2620;
+    --parchment:#E9E2D0;
+    --muted:#9C8E76;
+    --muted-dim:#6E6455;
+    --brass:#B08D57;
+    --brass-bright:#CBA871;
+    --terminal-glass: rgba(28,33,28,0.55);
+    --terminal-edge: rgba(143,187,160,0.25);
+    --terminal-text:#8FBBA0;
+    --rule: rgba(176,141,87,0.25);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{background:var(--ink);}
+  body{
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(176,141,87,0.06), transparent),
+      var(--ink);
+    color:var(--parchment);
+    font-family:'Literata', serif;
+    font-optical-sizing:auto;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 32px;}
+
+  /* Header */
+  header.hero{
+    padding:120px 0 90px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--muted-dim);
+    margin-bottom:28px;
+  }
+  .eyebrow::before{content:"§ "; color:var(--brass);}
+  h1.identity{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-style:italic;
+    font-size:clamp(28px, 4vw, 40px);
+    line-height:1.42;
+    color:var(--parchment);
+    letter-spacing:0.002em;
+  }
+  h1.identity em{
+    font-style:normal;
+    color:var(--brass-bright);
+    font-weight:500;
+  }
+  .role-line{
+    margin-top:36px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--muted);
+    letter-spacing:0.02em;
+  }
+  .role-line .div{color:var(--muted-dim); margin:0 10px;}
+
+  /* Chapter */
+  .chapter{
+    padding:96px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .chapter:last-of-type{border-bottom:none;}
+  .chapter-mark{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--muted-dim);
+    margin-bottom:18px;
+    letter-spacing:0.04em;
+  }
+  .chapter-mark span{color:var(--brass);}
+  h2.chapter-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(26px, 3.4vw, 34px);
+    color:var(--parchment);
+    margin-bottom:8px;
+    line-height:1.3;
+  }
+  .chapter-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-bottom:40px;
+    letter-spacing:0.02em;
+  }
+
+  p{margin-bottom:22px; color:var(--parchment); font-size:17px;}
+  p.lede{
+    font-size:19px;
+    color:var(--parchment);
+  }
+  p.lede::first-letter{
+    font-family:'Fraunces', serif;
+    font-size:64px;
+    font-weight:500;
+    color:var(--brass-bright);
+    float:left;
+    line-height:0.8;
+    padding-right:12px;
+    padding-top:6px;
+  }
+  .muted{color:var(--muted); font-size:15.5px;}
+
+  blockquote{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:20px;
+    color:var(--brass-bright);
+    border-left:2px solid var(--brass);
+    padding-left:24px;
+    margin:36px 0;
+    line-height:1.6;
+  }
+
+  /* Terminal plate — signature element */
+  .plate{
+    margin:44px 0;
+    background:var(--terminal-glass);
+    border:1px solid var(--terminal-edge);
+    border-radius:6px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    overflow:hidden;
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+  }
+  .plate-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--terminal-edge);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--muted-dim);
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted-dim); opacity:0.5;}
+  .plate-body{
+    padding:22px 20px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13.5px;
+    color:var(--terminal-text);
+    line-height:1.9;
+    white-space:pre-wrap;
+  }
+  .plate-body .comment{color:var(--muted-dim);}
+  .plate-body .metric{color:var(--brass-bright);}
+  .plate-body .before{color:#B98368;}
+  .plate-body .arrow{color:var(--muted);}
+
+  .metric-row{
+    display:flex;
+    gap:40px;
+    margin-top:44px;
+    flex-wrap:wrap;
+  }
+  .metric-item{flex:1; min-width:140px;}
+  .metric-num{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:30px;
+    color:var(--brass-bright);
+    display:block;
+  }
+  .metric-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted-dim);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-top:6px;
+    display:block;
+  }
+
+  footer{
+    padding:80px 0 100px;
+    text-align:center;
+  }
+  footer .sign{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:16px;
+    color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Portfolio · iOS Engineering Lead</div>
+    <h1 class="identity">
+      복잡한 모바일 시스템을 <em>팀이 오래 유지할 수 있는 구조</em>로 단순화하고,<br>
+      팀이 스스로 좋은 기술 결정을 내리도록 정렬시키는 엔지니어입니다.
+    </h1>
+    <div class="role-line">SENIOR SOFTWARE ENGINEER (STAFF)<span class="div">/</span>iOS LEAD<span class="div">/</span>15Y IOS · 20Y SW</div>
+  </header>
+
+  <section class="chapter">
+    <div class="chapter-mark">chapter <span>i.</span></div>
+    <h2 class="chapter-title">모듈이 스스로 말하게 하기</h2>
+    <div class="chapter-sub">TUIST · TCA · SWIFTUI — 아키텍처 재설계</div>
+
+    <p class="lede">팀이 커질수록 빌드는 느려지고, 의존성은 뒤엉킨다. 새 기능 하나를 추가하려면 관련 없는 모듈까지 전부 컴파일해야 했고, 로컬 빌드는 어느새 커피 한 잔을 넘어 점심시간을 잡아먹는 일이 되어 있었다. 문제는 코드가 아니라 구조였다.</p>
+
+    <p>모듈 경계를 다시 그리는 작업부터 시작했다. 기능 단위로 책임을 쪼개고, Tuist로 의존성 그래프를 명시적으로 선언해 "누가 누구를 알아야 하는가"를 코드가 아닌 설계 문서 수준에서 강제했다. TCA와 SwiftUI를 표준 패턴으로 도입한 것도 같은 이유였다 — 새로 합류한 팀원이 기존 관습을 추측하지 않고, 구조를 보면 규칙을 알 수 있도록.</p>
+
+    <blockquote>"빠른 빌드"가 목표가 아니라, 팀이 매번 같은 실수를 반복하지 않는 구조가 목표였다.</blockquote>
+
+    <div class="plate">
+      <div class="plate-header">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span style="margin-left:6px;">local — build.log</span>
+      </div>
+      <div class="plate-body"><span class="comment"># before modularization</span>
+$ time xcodebuild build
+<span class="before">real  2h 04m 12s</span>
+
+<span class="comment"># after Tuist + TCA modular architecture</span>
+$ time xcodebuild build
+<span class="metric">real  0h 15m 08s</span>  <span class="arrow">← 87% reduction</span></div>
+    </div>
+
+    <p class="muted">이 구조 전환은 이후 CI/CD를 수동 배포에서 Jenkins, 그리고 GitHub Actions로 이전하는 작업의 기반이 되었고, 팀 전체의 개발 생산성을 약 30% 끌어올리는 결과로 이어졌다.</p>
+
+    <div class="metric-row">
+      <div class="metric-item">
+        <span class="metric-num">2h → 15m</span>
+        <span class="metric-label">Local Build Time</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-num">99.99%+</span>
+        <span class="metric-label">Crash-Free Rate</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-num">~30%</span>
+        <span class="metric-label">Team Productivity</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="sign">— 다음 챕터는 팀을 코칭하는 이야기로 이어집니다 —</div>
+  </footer>
+</div>
+
+</body>
+</html>
