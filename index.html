@@ -41,6 +41,21 @@
     padding:120px 0 90px;
     border-bottom:1px solid var(--rule);
   }
+  .byline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--muted);
+    letter-spacing:0.02em;
+    margin-bottom:20px;
+  }
+  .byline .dot-sep{color:var(--muted-dim); margin:0 10px;}
+  .byline a{
+    color:var(--muted);
+    text-decoration:none;
+    border-bottom:1px solid var(--rule);
+    transition:color .2s, border-color .2s;
+  }
+  .byline a:hover{color:var(--brass-bright); border-color:var(--brass);}
   .eyebrow{
     font-family:'IBM Plex Mono', monospace;
     font-size:12px;
@@ -201,12 +216,88 @@
     font-size:16px;
     color:var(--muted);
   }
+
+  /* Chapter TOC — fixed left margin rail */
+  html{scroll-behavior:smooth;}
+  .chapter{scroll-margin-top:64px;}
+  .toc{
+    position:fixed;
+    left:40px;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    z-index:10;
+  }
+  .toc-item{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:1px solid var(--rule);
+    background:var(--panel);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted-dim);
+    text-decoration:none;
+    transition:border-color .2s, color .2s;
+  }
+  .toc-item::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:100%;
+    width:1px;
+    height:26px;
+    background:var(--rule);
+    transform:translateX(-50%);
+  }
+  .toc-item:last-child::before{display:none;}
+  .toc-item:not(:last-child){margin-bottom:26px;}
+  .toc-item::after{
+    content:attr(data-label);
+    position:absolute;
+    left:calc(100% + 14px);
+    top:50%;
+    transform:translateY(-50%);
+    white-space:nowrap;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    background:var(--panel);
+    border:1px solid var(--panel-edge);
+    padding:6px 10px;
+    border-radius:4px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .15s;
+  }
+  .toc-item:hover::after{opacity:1;}
+  .toc-item:hover, .toc-item.active{
+    border-color:var(--brass);
+    color:var(--brass-bright);
+  }
+  @media (max-width: 1180px){
+    .toc{display:none;}
+  }
 </style>
 </head>
 <body>
 
+<nav class="toc" aria-label="챕터 바로가기">
+  <a href="#chapter-1" class="toc-item" data-label="모듈이 스스로 말하게 하기">i</a>
+  <a href="#chapter-2" class="toc-item" data-label="정답이 아니라 방향을 제시하기">ii</a>
+  <a href="#chapter-3" class="toc-item" data-label="가장 큰 실패에서 다시 시작하기">iii</a>
+  <a href="#chapter-4" class="toc-item" data-label="조직 경계가 아니라 사용자 여정을 기준으로">iv</a>
+</nav>
+
 <div class="wrap">
   <header class="hero">
+    <div class="byline">이상찬<span class="dot-sep">·</span><a href="mailto:sangchan82@gmail.com">sangchan82@gmail.com</a></div>
     <div class="eyebrow">Portfolio · iOS Engineering Lead</div>
     <h1 class="identity">
       복잡한 모바일 시스템을 <em>팀이 오래 유지할 수 있는 구조</em>로 단순화하고,<br>
@@ -215,7 +306,7 @@
     <div class="role-line">SENIOR SOFTWARE ENGINEER (STAFF)<span class="div">/</span>iOS LEAD<span class="div">/</span>15Y IOS · 20Y SW</div>
   </header>
 
-  <section class="chapter">
+  <section class="chapter" id="chapter-1">
     <div class="chapter-mark">chapter <span>i.</span></div>
     <h2 class="chapter-title">모듈이 스스로 말하게 하기</h2>
     <div class="chapter-sub">TUIST · TCA · SWIFTUI — 아키텍처 재설계</div>
@@ -258,10 +349,111 @@ $ time xcodebuild build
     </div>
   </section>
 
+  <section class="chapter" id="chapter-2">
+    <div class="chapter-mark">chapter <span>ii.</span></div>
+    <h2 class="chapter-title">정답이 아니라 방향을 제시하기</h2>
+    <div class="chapter-sub">TCA 아키텍처 도입 · 팀 의사결정 · DYNAMIC TYPE</div>
+
+    <p class="lede">새 아키텍처를 도입할 때 가장 쉬운 길은 정답을 정해서 통보하는 것이다. 하지만 그렇게 자리잡은 규칙은 그걸 정한 사람이 떠나는 순간 함께 흔들린다. TCA 도입을 검토할 때도 러닝커브를 이유로 신중한 입장이었지만, 이번만큼은 결론에 도달하는 방식 자체를 다르게 가져가고 싶었다.</p>
+
+    <p>정답을 제시하는 대신 팀원들과 함께 같은 기능을 여러 구조로 구현해보고, 장단점을 나란히 놓고 비교했다. MVVM+Combine과 TCA로 각각 프로토타입을 만들어본 뒤, 장기적인 유지보수 관점에서 어떤 구조가 팀에 남을지 함께 판단했다. TCA로 결론이 났지만, 결론 자체보다 거기 도달한 과정이 이후 팀의 의사결정 방식을 바꿔놓았다.</p>
+
+    <blockquote>"정답을 이야기하기보다 방향을 이야기하려고 합니다. 방향은 제시하지만 구현 방식은 팀이 스스로 결정하도록 합니다."</blockquote>
+
+    <div class="plate">
+      <div class="plate-header">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span style="margin-left:6px;">team — decision.log</span>
+      </div>
+      <div class="plate-body"><span class="comment"># candidates evaluated in parallel</span>
+MVVM + Combine
+MV + Observation
+<span class="metric">TCA + SwiftUI</span>  <span class="arrow">← chosen by team, not by lead</span>
+
+<span class="comment"># decision criteria</span>
+learning curve · testability · long-term maintenance</div>
+    </div>
+
+    <p class="muted">같은 원칙은 디자인 시스템에도 적용했다. Dynamic Type 지원을 제안했을 때 디자인이 무너질 거라는 우려가 있었지만, 실제로 큰 글꼴을 쓰는 사용자가 생각보다 많다는 데이터를 공유했고 대부분의 화면에 자연스럽게 반영됐다. 이후로는 새 디자인 요구사항이 생기면 시스템이 먼저 막지 않고, 기능을 먼저 구현한 뒤 시스템에 편입하는 방식으로 운영을 바꿨다.</p>
+  </section>
+
+  <section class="chapter" id="chapter-3">
+    <div class="chapter-mark">chapter <span>iii.</span></div>
+    <h2 class="chapter-title">가장 큰 실패에서 다시 시작하기</h2>
+    <div class="chapter-sub">OAUTH 토큰 관리 · RACE CONDITION · SWIFT CONCURRENCY</div>
+
+    <p class="lede">통합 로그인의 OAuth 토큰 관리 구조를 개선하는 프로젝트였다. 레거시 코드와의 호환성을 지키려 애썼지만, 실제 운영 환경은 예상과 다르게 무너졌다 — 여러 경로에서 동시에 토큰을 갱신하며 Race Condition이 발생했고, 일부 케이스는 Deadlock에 가까운 상태로 이어졌다. 커리어에서 가장 크게 실패한 순간이었다.</p>
+
+    <p>문제는 기술이 아니라 그 기술을 검증한 방식이었다. 단위 테스트는 충분히 통과했지만, 실제 서비스의 동시 요청 패턴까지는 검증하지 못했다. 실패를 인정한 뒤 Swift Concurrency와 Actor 모델을 처음부터 다시 공부했고, 공유 가변 상태를 격리하는 구조로 다시 설계했다.</p>
+
+    <blockquote>"이 경험 이후에는 새로운 기술을 도입할 때 테스트 코드뿐 아니라 실제 서비스 환경에서 어떤 문제가 발생할 수 있는지 더 많이 고민하게 되었습니다."</blockquote>
+
+    <div class="plate">
+      <div class="plate-header">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span style="margin-left:6px;">incident — production.log</span>
+      </div>
+      <div class="plate-body"><span class="comment"># unified login · token refresh</span>
+<span class="before">Race Condition</span>  concurrent refresh calls, no isolation
+<span class="before">Deadlock-adjacent</span>  legacy compatibility path
+
+<span class="comment"># response</span>
+relearn Swift Concurrency + Actor isolation
+<span class="metric">shared mutable state → actor-isolated</span>  <span class="arrow">← ongoing, Swift 6 ready</span></div>
+    </div>
+
+    <p class="muted">지금도 이 구조를 Actor 기반으로 완전히 전환하는 작업을 계속 제안하고 있다. 실패 자체보다, 그 실패를 인정하고 다시 배우는 태도가 이후 팀에서 새 기술을 검토하는 기준이 됐다.</p>
+  </section>
+
+  <section class="chapter" id="chapter-4">
+    <div class="chapter-mark">chapter <span>iv.</span></div>
+    <h2 class="chapter-title">조직 경계가 아니라 사용자 여정을 기준으로</h2>
+    <div class="chapter-sub">해외숙소 리메이크 · 크로스 도메인 UX 통합</div>
+
+    <p class="lede">검색 결과, 상품 상세, 프로모션 페이지 — 해외숙소 서비스는 오랫동안 조직 단위로 쪼개져 있었다. 각 팀은 자기 화면을 잘 만들었지만, 사용자에게는 그저 하나의 여행이었다. 화면과 화면 사이 이동은 매끄럽지 않았고, 같은 정보가 스크린마다 다르게 표현됐다.</p>
+
+    <p>리메이크를 맡으면서 가장 먼저 한 일은 화면 목록이 아니라 사용자 시나리오를 그리는 것이었다. 사용자가 실제로 밟는 흐름을 따라, 각 조직이 독립적으로 개발하던 화면들을 하나의 여정으로 다시 연결했다. 조직 구조를 존중하면서도, 판단 기준을 "우리 팀 화면"에서 "사용자의 다음 걸음"으로 바꾸는 작업이었다.</p>
+
+    <blockquote>"기능 하나를 개발하더라도 사용자가 어떤 흐름으로 서비스를 이용하는지 먼저 생각하고, 사용자가 더 좋은 경험을 할 수 있는 방향이라면 그 선택을 우선합니다."</blockquote>
+
+    <div class="plate">
+      <div class="plate-header">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span style="margin-left:6px;">ux — journey.map</span>
+      </div>
+      <div class="plate-body"><span class="comment"># before — organized by team ownership</span>
+검색 결과 팀 · 상품 상세 팀 · 프로모션 팀  <span class="before">→ 3개의 독립된 화면</span>
+
+<span class="comment"># after — organized by user journey</span>
+<span class="metric">하나의 사용자 시나리오</span>  <span class="arrow">← 조직 경계가 아니라 사용자의 다음 걸음이 기준</span></div>
+    </div>
+
+    <p class="muted">이 프로젝트 이후 새 기능을 검토할 때 "이 화면이 필요한가"보다 "사용자의 여정에서 이 지점이 필요한가"를 먼저 묻는 습관이 팀에 남았다.</p>
+  </section>
+
   <footer>
-    <div class="sign">— 다음 챕터는 팀을 코칭하는 이야기로 이어집니다 —</div>
+    <div class="sign">— 다음 챕터는 작은 성공을 반복하는 이야기로 이어집니다 —</div>
   </footer>
 </div>
+
+<script>
+(function(){
+  var links = document.querySelectorAll('.toc-item');
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link = map[entry.target.id];
+      if(!link) return;
+      if(entry.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+  document.querySelectorAll('.chapter[id]').forEach(function(sec){ observer.observe(sec); });
+})();
+</script>
 
 </body>
 </html>
