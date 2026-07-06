@@ -196,6 +196,28 @@ blockquote{
   display:block;
 }
 
+.epilogue{
+  padding:16px 0 88px;
+  text-align:center;
+  border-bottom:1px solid var(--rule);
+}
+.epilogue-quote{
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  font-size:22px;
+  color:var(--brass-bright);
+  line-height:1.6;
+  max-width:560px;
+  margin:0 auto;
+}
+
+.prior-roles{
+  padding:64px 0 96px;
+}
+.prior-roles .chapter-mark{
+  margin-bottom:24px;
+}
+
 footer{
   padding:80px 0 100px;
   text-align:center;
