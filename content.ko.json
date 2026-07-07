@@ -1,12 +1,15 @@
 {
   "meta": {
-    "title": "이상찬 — 포트폴리오"
+    "title": "이상찬 — 포트폴리오",
+    "navAriaLabel": "챕터 바로가기",
+    "contactNavLabel": "연락하기",
+    "langSwitchAriaLabel": "언어 선택"
   },
   "hero": {
     "name": "이상찬",
     "email": "sangchan82@gmail.com",
     "eyebrow": "Portfolio · iOS Engineering Lead",
-    "identityHtml": "복잡한 모바일 시스템을 <em>팀이 오래 유지할 수 있는 구조</em>로 단순화하고,<br>팀이 스스로 좋은 기술 결정을 내리도록 정렬시키는 엔지니어입니다.",
+    "identityHtml": "복잡한 모바일 시스템을 <em>팀이 오래 유지할 수 있는 구조</em>로 단순화하고, 팀이 스스로 좋은 기술 결정을 내리도록 정렬시키는 엔지니어입니다.",
     "roleLine": "SENIOR SOFTWARE ENGINEER (STAFF)<span class=\"div\">/</span>iOS LEAD<span class=\"div\">/</span>15Y IOS · 20Y SW"
   },
   "chapters": [
@@ -126,6 +129,7 @@
   "contact": {
     "label": "contact",
     "labelSub": "· next conversation",
+    "ariaLabel": "연락처",
     "links": [
       { "label": "Email", "href": "mailto:sangchan82@gmail.com" },
       { "label": "GitHub", "href": "https://github.com/SangChan", "external": true },

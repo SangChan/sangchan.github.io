@@ -1,23 +1,24 @@
 #!/usr/bin/env node
-// content.json + template.html -> index.html
+// content.ko.json + content.en.json + template.html -> index.html
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = __dirname;
-const content = JSON.parse(fs.readFileSync(path.join(ROOT, 'content.json'), 'utf8'));
 const template = fs.readFileSync(path.join(ROOT, 'template.html'), 'utf8');
+
+const LANGS = ['ko', 'en'];
 
 function renderMark(prefix, suffixHtml) {
   return `<div class="chapter-mark">${prefix} <span>${suffixHtml}</span></div>`;
 }
 
-function renderNav(chapters) {
+function renderNav(chapters, langCode) {
   return chapters
     .map((c) => {
       const navText = c.numeral.replace(/\.$/, '');
-      return `  <a href="#${c.id}" class="toc-item" data-label="${c.tocLabel}">${navText}</a>`;
+      return `  <a href="#${c.id}-${langCode}" class="toc-item" data-label="${c.tocLabel}">${navText}</a>`;
     })
     .join('\n');
 }
@@ -69,9 +70,9 @@ function renderBlock(block) {
   }
 }
 
-function renderChapter(chapter) {
+function renderChapter(chapter, langCode) {
   return [
-    `  <section class="chapter" id="${chapter.id}">`,
+    `  <section class="chapter" id="${chapter.id}-${langCode}">`,
     `    ${renderMark('chapter', chapter.numeral)}`,
     `    <h2 class="chapter-title">${chapter.title}</h2>`,
     `    <div class="chapter-sub">${chapter.sub}</div>`,
@@ -98,7 +99,7 @@ function renderPriorRoles(priorRoles) {
   ].join('\n');
 }
 
-function renderContact(contact) {
+function renderContact(contact, langCode) {
   const links = contact.links
     .map(
       (l) =>
@@ -106,9 +107,9 @@ function renderContact(contact) {
     )
     .join('\n');
   return [
-    `  <section class="contact" id="contact">`,
+    `  <section class="contact" id="contact-${langCode}">`,
     `    ${renderMark(contact.label, contact.labelSub)}`,
-    `    <div class="contact-links" aria-label="연락처">`,
+    `    <div class="contact-links" aria-label="${contact.ariaLabel}">`,
     links,
     `    </div>`,
     `  </section>`,
@@ -116,15 +117,55 @@ function renderContact(contact) {
   ].join('\n');
 }
 
+function renderLangSwitch(contents) {
+  return LANGS.map((code, i) => {
+    const cls = i === 0 ? 'lang-item active' : 'lang-item';
+    return `<button type="button" class="${cls}" data-lang="${code}" data-title="${contents[code].meta.title}">${code.toUpperCase()}</button>`;
+  }).join('<span class="lang-sep">/</span>');
+}
+
+function renderPanel(content, langCode, isDefault) {
+  const nav = [
+    `<nav class="toc" aria-label="${content.meta.navAriaLabel}">`,
+    renderNav(content.chapters, langCode),
+    `  <a href="#contact-${langCode}" class="toc-item" data-label="${content.meta.contactNavLabel}">end</a>`,
+    `</nav>`,
+  ].join('\n');
+
+  const wrap = [
+    `<div class="wrap">`,
+    `  <header class="hero">`,
+    renderHero(content.hero),
+    `  </header>`,
+    '',
+    content.chapters.map((c) => renderChapter(c, langCode)).join('\n'),
+    `  <section class="epilogue">`,
+    `    <p class="epilogue-quote">${content.epilogueQuote}</p>`,
+    `  </section>`,
+    '',
+    renderPriorRoles(content.priorRoles),
+    renderContact(content.contact, langCode),
+    `  <footer>`,
+    `    <div class="sign">${content.footer}</div>`,
+    `  </footer>`,
+    `</div>`,
+  ].join('\n');
+
+  return [`<div class="i18n" data-lang="${langCode}"${isDefault ? '' : ' hidden'}>`, nav, wrap, `</div>`].join(
+    '\n'
+  );
+}
+
+const contents = {};
+for (const code of LANGS) {
+  contents[code] = JSON.parse(fs.readFileSync(path.join(ROOT, `content.${code}.json`), 'utf8'));
+}
+
 const html = template
-  .replace('{{TITLE}}', content.meta.title)
-  .replace('{{NAV}}', renderNav(content.chapters))
-  .replace('{{HERO}}', renderHero(content.hero))
-  .replace('{{CHAPTERS}}', content.chapters.map(renderChapter).join('\n'))
-  .replace('{{EPILOGUE_QUOTE}}', content.epilogueQuote)
-  .replace('{{PRIOR_ROLES}}', renderPriorRoles(content.priorRoles))
-  .replace('{{CONTACT}}', renderContact(content.contact))
-  .replace('{{FOOTER}}', content.footer);
+  .replace('{{TITLE}}', contents.ko.meta.title)
+  .replace('{{LANG_SWITCH_ARIA}}', contents.ko.meta.langSwitchAriaLabel)
+  .replace('{{LANG_SWITCH}}', renderLangSwitch(contents))
+  .replace('{{PANELS}}', LANGS.map((code, i) => renderPanel(contents[code], code, i === 0)).join('\n'));
 
 fs.writeFileSync(path.join(ROOT, 'index.html'), html);
-console.log('Built index.html from content.json');
+console.log('Built index.html from content.ko.json + content.en.json');

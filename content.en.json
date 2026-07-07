@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "title": "Sangchan Lee — Portfolio",
+    "navAriaLabel": "Chapter navigation",
+    "contactNavLabel": "Contact",
+    "langSwitchAriaLabel": "Language"
+  },
+  "hero": {
+    "name": "Sangchan Lee",
+    "email": "sangchan82@gmail.com",
+    "eyebrow": "Portfolio · iOS Engineering Lead",
+    "identityHtml": "I turn complex mobile systems into <em>structures a team can live with for years</em>, and align the team to make good technical calls on its own.",
+    "roleLine": "SENIOR SOFTWARE ENGINEER (STAFF)<span class=\"div\">/</span>iOS LEAD<span class=\"div\">/</span>15Y IOS · 20Y SW"
+  },
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "numeral": "i.",
+      "title": "Letting Modules Speak for Themselves",
+      "sub": "TUIST · TCA · SWIFTUI — Architecture Redesign",
+      "tocLabel": "Letting Modules Speak for Themselves",
+      "blocks": [
+        { "type": "lede", "html": "As a team grows, builds slow down and dependencies knot together. Adding one new feature meant recompiling modules that had nothing to do with it, and a local build had quietly outgrown a coffee break — it was eating into lunch. The problem wasn't the code. It was the structure." },
+        { "type": "p", "html": "I started by redrawing the module boundaries — splitting responsibilities by feature and using Tuist to declare the dependency graph explicitly, so \"who needs to know about whom\" was enforced by the design itself, not left to convention in code. Adopting TCA and SwiftUI as the standard pattern followed the same logic: a new teammate should be able to read the structure and infer the rules, instead of guessing at habits no one wrote down." },
+        { "type": "quote", "html": "\"A fast build\" was never the goal — the goal was a structure that stopped the team from repeating the same mistake every time." },
+        { "type": "plate", "label": "local — build.log", "bodyHtml": "<span class=\"comment\"># before modularization</span>\n$ time xcodebuild build\n<span class=\"before\">real  2h 04m 12s</span>\n\n<span class=\"comment\"># after Tuist + TCA modular architecture</span>\n$ time xcodebuild build\n<span class=\"metric\">real  0h 15m 08s</span>  <span class=\"arrow\">← 87% reduction</span>" },
+        { "type": "muted", "html": "That shift in structure became the foundation for later moving CI/CD off manual deploys — first to Jenkins, then to GitHub Actions." },
+        { "type": "p", "html": "This structure didn't roll out everywhere at once. Starting in 2023, I applied it first to a handful of screens — category, curated collections, settings — to prove out the pattern. That track record was what let us rewrite the home screen, the single most important surface in the app, entirely in SwiftUI and TCA during the 2025 rebrand. An in-house UI framework that was expensive to maintain, business logic and screen state that were hard to trace, a productivity gap between senior and junior engineers — instead of solving years of accumulated problems all at once, I solved them by extending a pattern that had already proven itself." },
+        { "type": "metrics", "items": [
+          { "num": "2h → 15m", "label": "Local Build Time" },
+          { "num": "99.99%", "label": "Crash-Free · v9.0.0→9.9.0" },
+          { "num": "2023→2025", "label": "Incremental Rollout → Home" }
+        ]},
+        { "type": "furtherReading", "url": "https://medium.com/@nol.tech/swiftui%EC%99%80-tca%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-nol-%ED%99%88-%EB%A6%AC%EB%B8%8C%EB%9E%9C%EB%94%A9-6a4b0d73f06d", "label": "→ Further reading: NOL Home Rebranding with SwiftUI and TCA (Medium, in Korean)" }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "numeral": "ii.",
+      "title": "Pointing to a Direction, Not the Answer",
+      "sub": "TCA Architecture Adoption · Team Decision-Making · Dynamic Type",
+      "tocLabel": "Pointing to a Direction, Not the Answer",
+      "blocks": [
+        { "type": "lede", "html": "The easiest path when introducing a new architecture is to hand down the answer and announce it. But a rule installed that way comes apart the moment the person who set it leaves. I'd been cautious about TCA myself, worried about the learning curve — but this time I wanted the process of reaching a conclusion to look different, not just the conclusion." },
+        { "type": "p", "html": "Instead of handing down an answer, we built the same feature multiple ways with the team and compared the trade-offs side by side. We prototyped it in both MVVM+Combine and TCA, then judged together — from a long-term maintenance standpoint — which structure would actually stick. TCA won, but the process of getting there mattered more than the result: it changed how the team made decisions afterward." },
+        { "type": "quote", "html": "\"I try to talk about direction, not answers. I'll point the way, but I let the team decide how to get there.\"" },
+        { "type": "plate", "label": "team — decision.log", "bodyHtml": "<span class=\"comment\"># candidates evaluated in parallel</span>\nMVVM + Combine\nMV + Observation\n<span class=\"metric\">TCA + SwiftUI</span>  <span class=\"arrow\">← chosen by team, not by lead</span>\n\n<span class=\"comment\"># decision criteria</span>\nlearning curve · testability · long-term maintenance" },
+        { "type": "muted", "html": "The same principle carried over to the design system. When I proposed supporting Dynamic Type, people worried it would break the design — but the data told a different story: far more users relied on large text sizes than anyone expected, and it landed cleanly across most screens. Since then, a new design requirement doesn't get blocked by the system first; we build the feature, then fold it into the system." }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "numeral": "iii.",
+      "title": "Starting Over From the Biggest Failure",
+      "sub": "OAuth Token Management · Race Condition · Swift Concurrency",
+      "tocLabel": "Starting Over From the Biggest Failure",
+      "blocks": [
+        { "type": "lede", "html": "This project set out to fix how unified login managed OAuth tokens. I worked hard to preserve compatibility with legacy code — but production broke in ways I hadn't planned for. Concurrent refresh calls from multiple paths triggered a race condition, and some paths came close to deadlock. It's the biggest failure of my career." },
+        { "type": "p", "html": "The problem wasn't the technology. It was how I'd validated it. Unit tests passed cleanly, but they never touched the concurrent request patterns of a live service. Once I owned the failure, I relearned Swift Concurrency and the actor model from the ground up, and redesigned the system to isolate shared mutable state." },
+        { "type": "quote", "html": "\"Since then, whenever I adopt something new, I spend a lot more time thinking about what can go wrong in production — not just what the tests cover.\"" },
+        { "type": "plate", "label": "incident — production.log", "bodyHtml": "<span class=\"comment\"># unified login · token refresh</span>\n<span class=\"before\">Race Condition</span>  concurrent refresh calls, no isolation\n<span class=\"before\">Deadlock-adjacent</span>  legacy compatibility path\n\n<span class=\"comment\"># response</span>\nrelearn Swift Concurrency + Actor isolation\n<span class=\"metric\">shared mutable state → actor-isolated</span>  <span class=\"arrow\">← ongoing, Swift 6 ready</span>" },
+        { "type": "muted", "html": "I'm still pushing to move this system fully onto actors. More than the failure itself, owning it and relearning from it became the team's bar for how we evaluate new technology now." }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "numeral": "iv.",
+      "title": "The User's Journey, Not the Org Chart",
+      "sub": "Overseas Accommodations Remake · Cross-Domain UX Integration",
+      "tocLabel": "The User's Journey, Not the Org Chart",
+      "blocks": [
+        { "type": "lede", "html": "Search results, product detail, promotion pages — the overseas accommodations service had been split along org lines for years. Each team built its own screen well, but to the user it was one trip. Moving between screens wasn't seamless, and the same information looked different depending on which screen you were on." },
+        { "type": "p", "html": "Taking on the remake, the first thing I did wasn't list screens — it was map the user's actual path through the product. Following that path, I reconnected screens that each org had been building independently into a single journey. It meant respecting the org chart while changing the question we asked from \"what does our team's screen need\" to \"what does the user need next.\"" },
+        { "type": "quote", "html": "\"Even for a single feature, I think first about the flow a user takes through the product, and I go with whichever choice serves that experience better.\"" },
+        { "type": "plate", "label": "ux — journey.map", "bodyHtml": "<span class=\"comment\"># before — organized by team ownership</span>\nSearch Results team · Product Detail team · Promotion team  <span class=\"before\">→ 3 independent screens</span>\n\n<span class=\"comment\"># after — organized by user journey</span>\n<span class=\"metric\">One user scenario</span>  <span class=\"arrow\">← organized by the user's next step, not org boundaries</span>" },
+        { "type": "muted", "html": "Since this project, the team asks \"does this matter to the user's journey?\" before it asks \"do we need this screen?\" when reviewing new features." }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "numeral": "v.",
+      "title": "Repeating Small Wins",
+      "sub": "GitHub Actions · Incremental CI/CD Rollout",
+      "tocLabel": "Repeating Small Wins",
+      "blocks": [
+        { "type": "lede", "html": "When we decided to move our CI off Jenkins and onto GitHub Actions, I didn't design the ideal pipeline up front. I started with the smallest possible step: running our existing Fastlane deploy script, unchanged, on a GitHub runner. The only thing that changed was where it ran — the team didn't have to learn a thing." },
+        { "type": "p", "html": "From there I layered in lint, formatter, unit tests, and AI code review, one at a time — each added only once the previous stage had settled without issues. Trying to design the perfect pipeline in one pass would have just delayed adoption. Today it's grown into an automated review setup that includes Slack notifications, and it's still evolving." },
+        { "type": "quote", "html": "\"I'd rather ship something that works and improve it as people actually use it.\"" },
+        { "type": "plate", "label": "ci — rollout.log", "bodyHtml": "<span class=\"comment\"># stage 0 — migrate runner only</span>\nfastlane deploy script, unchanged, on GitHub Runner\n\n<span class=\"comment\"># stage 1..4 — added one at a time, after each stabilized</span>\n+ lint\n+ formatter\n+ unit test\n+ ai code review\n\n<span class=\"comment\"># current</span>\n<span class=\"metric\">Slack notifications + automated review environment</span>  <span class=\"arrow\">← still expanding</span>" },
+        { "type": "muted", "html": "The same habit carried over to how I adopt new technology in general — compare a few working approaches first, then widen the scope one small win at a time, instead of trying to complete the whole picture up front." }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "numeral": "vi.",
+      "title": "Leaving the Familiar to Prove Myself Again",
+      "sub": "EF Education First · 2015–2019 · Shanghai APAC HQ · WebRTC",
+      "tocLabel": "Leaving the Familiar to Prove Myself Again",
+      "blocks": [
+        { "type": "lede", "html": "The challenge started before I even reached the office. Shanghai's APAC headquarters brought together developers from all over the world — different languages, different backgrounds, different ways of working. Leaving everything familiar behind, I had to prove myself from zero, on skill alone." },
+        { "type": "p", "html": "The project was a WebRTC video-classroom app. Launch wasn't the finish line — it was the start. Features kept shipping after that, and working sprint by sprint under agile, we folded in real user feedback every cycle. Keeping pace with colleagues who differed in nationality and working style alike left only one option: build trust through results, not words." },
+        { "type": "quote", "html": "Prove yourself through skill, and neither nationality nor language gets in the way." },
+        { "type": "plate", "label": "webrtc — launch.log", "bodyHtml": "<span class=\"comment\"># shanghai apac hq — cross-national team</span>\nlaunch: WebRTC-based video classroom app\n<span class=\"metric\">1,000,000+ classes</span>  <span class=\"arrow\">← since launch, continuously updated</span>\n\n<span class=\"comment\"># process</span>\nagile sprints · continuous delivery · team-driven iteration" },
+        { "type": "muted", "html": "Proving myself on an unfamiliar team left a lasting habit: build trust through results, not rules, no matter which organization I join next." }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "numeral": "vii.",
+      "title": "Code That Reads as One",
+      "sub": "CocoaPods → SPM · SwiftLint · Code Style",
+      "tocLabel": "Code That Reads as One",
+      "blocks": [
+        { "type": "lede", "html": "Moving the dependency manager from CocoaPods to Swift Package Manager looked like a tool swap. It was really about erasing the question of whose code this was. Every library managed its versions differently, and you could open a file and guess which teammate wrote it just from the style." },
+        { "type": "p", "html": "When we introduced SwiftLint and a formatter, no one person set the rules. We worked out the standards together as a team, and whenever a rule caused friction, we revised the rule itself so the team could settle into it naturally. Every library is on SPM now. The goal was never to erase anyone's personal style — it was to make the whole project read as one codebase." },
+        { "type": "quote", "html": "\"The goal was never to tell whose code was whose — it was for the whole project to read as one codebase.\"" },
+        { "type": "plate", "label": "deps — migration.log", "bodyHtml": "<span class=\"comment\"># dependency manager</span>\nCocoaPods → <span class=\"metric\">Swift Package Manager</span>  <span class=\"arrow\">← all libraries</span>\n\n<span class=\"comment\"># style rules — decided with the team, not by one person</span>\nSwiftLint + Formatter" },
+        { "type": "muted", "html": "Setting the rules followed the same process: compare a few approaches first, hear the team out fully, and only then commit to a direction." }
+      ]
+    }
+  ],
+  "epilogueQuote": "\"I get more satisfaction from nudging a service that already has plenty of users toward something better, bit by bit, than from building something new from scratch.\"",
+  "priorRoles": {
+    "label": "Earlier Chapters",
+    "labelSub": "· earlier roles",
+    "plateLabel": "career — earlier.log",
+    "bodyHtml": "<span class=\"comment\"># 2014.07 – 2015.09 · Jaeneung Education</span>\nBuilt the API and push-notification systems behind the North America service, working backend and mobile in parallel\nRan internal engineering training (drove adoption of Spring and Git)\n\n<span class=\"comment\"># 2013.06 – 2014.03 · GolfZon</span>\nRefactored legacy iOS code, added map features, introduced a hybrid app architecture\n\n<span class=\"comment\"># 2011.01 – 2013.06 · KTH</span>\nBuilt the iOS bridge runtime and build system for 'Appresso,' a hybrid web-app platform\nWon a mobile solutions award · selected for a national government project\n\n<span class=\"comment\"># Before that · Tapi Computer</span>\nBuilt software integrating with unattended kiosk issuance machines"
+  },
+  "contact": {
+    "label": "contact",
+    "labelSub": "· next conversation",
+    "ariaLabel": "Contact",
+    "links": [
+      { "label": "Email", "href": "mailto:sangchan82@gmail.com" },
+      { "label": "GitHub", "href": "https://github.com/SangChan", "external": true },
+      { "label": "LinkedIn", "href": "https://www.linkedin.com/in/sangchanlee/", "external": true },
+      { "label": "Blog", "href": "https://gyaleon.wordpress.com/", "external": true }
+    ]
+  },
+  "footer": "— The next chapter is already in the works —"
+}

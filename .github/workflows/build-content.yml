@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - content.json
+      - content.ko.json
+      - content.en.json
       - template.html
       - build.js
 

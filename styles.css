@@ -340,3 +340,37 @@ html{scroll-behavior:smooth;}
 @media (max-width: 1180px){
   .toc{display:none;}
 }
+
+/* Language switch — fixed top-right */
+.lang-switch{
+  position:fixed;
+  top:28px;
+  right:32px;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  letter-spacing:0.04em;
+  padding:6px 10px;
+  border:1px solid var(--rule);
+  border-radius:20px;
+  background:var(--panel);
+}
+.lang-switch .lang-sep{color:var(--muted-dim);}
+.lang-switch .lang-item{
+  appearance:none;
+  background:none;
+  border:none;
+  padding:0;
+  font:inherit;
+  color:var(--muted-dim);
+  cursor:pointer;
+  transition:color .2s;
+}
+.lang-switch .lang-item:hover{color:var(--brass-bright);}
+.lang-switch .lang-item.active{
+  color:var(--brass-bright);
+  pointer-events:none;
+}
